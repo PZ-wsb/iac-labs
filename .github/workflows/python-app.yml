@@ -13,10 +13,14 @@ concurrency:
   # If this is enabled it will cancel current running and start latest
   cancel-in-progress: true
 
-
 jobs:
+  example_matrix:
+    strategy:
+      matrix:
+        os: [ "ubuntu-latest", "windows-latest" ]
+
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     defaults:
       run:
         working-directory: ./example-app
@@ -44,7 +48,7 @@ jobs:
   
   # poetry run task lint    
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     needs: build
     defaults:
       run:
@@ -75,7 +79,7 @@ jobs:
 
   # poetry run task formatter
   formatter:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     needs: build
     defaults:
       run:
@@ -106,7 +110,7 @@ jobs:
 
   # poetry run task security
   security:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     needs: build
     defaults:
       run:
@@ -137,7 +141,7 @@ jobs:
 
  # poetry run task test
   unittests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     needs: [lint, formatter, security]
     defaults:
       run:
