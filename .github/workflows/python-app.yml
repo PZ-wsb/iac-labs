@@ -14,12 +14,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  example_matrix:
-    strategy:
-      matrix:
-        os: [ "ubuntu-latest", "windows-latest" ]
 
-  build:
+  build:    
+    strategy:
+        matrix:
+          os: [ "ubuntu-latest", "windows-latest" ]
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -48,6 +47,9 @@ jobs:
   
   # poetry run task lint    
   lint:
+    strategy:
+        matrix:
+          os: [ "ubuntu-latest", "windows-latest" ]  
     runs-on: ${{ matrix.os }}
     needs: build
     defaults:
@@ -79,6 +81,9 @@ jobs:
 
   # poetry run task formatter
   formatter:
+    strategy:
+      matrix:
+        os: [ "ubuntu-latest", "windows-latest" ]
     runs-on: ${{ matrix.os }}
     needs: build
     defaults:
@@ -110,6 +115,9 @@ jobs:
 
   # poetry run task security
   security:
+    strategy:
+      matrix:
+        os: [ "ubuntu-latest", "windows-latest" ]
     runs-on: ${{ matrix.os }}
     needs: build
     defaults:
@@ -141,6 +149,9 @@ jobs:
 
  # poetry run task test
   unittests:
+    strategy:
+      matrix:
+        os: [ "ubuntu-latest", "windows-latest" ]
     runs-on: ${{ matrix.os }}
     needs: [lint, formatter, security]
     defaults:
